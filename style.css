@@ -41,20 +41,56 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	position: relative;
 	width: 300px;
 	height: 600px;
-	background-color: greenyellow;
+	background-color: rgb(221, 221, 221);
 }
 
 .tile {
 	width: 50px;
 	height: 10px;
-	background-color: rgb(20, 177, 85);
+	background-color: rgb(75, 207, 119);
 	border-radius: 20px;
 	position: absolute;
 }
 
 img {
+	/* background-color: aqua; */
 	width: 50px;
 	height:  50px;
 	position: absolute;
 	z-index: 100;
 }
+
+.main {
+	display: flex;
+}
+
+/*================*/
+
+/* .test__doodle {
+	position: absolute;
+	width: 50px;
+	height: 40px;
+	background-color: aquamarine;
+	left: 120px;
+	top: 230px;
+}
+
+.test {
+	width: 300px;
+	margin-left: 50px;
+	position: relative;
+	background-color: thistle;
+}
+
+.test__tile {
+	position: absolute;
+	width: 50px;
+	height: 10px;
+	background-color: black;
+	left: 80px;
+	top: 240px;
+	border-radius: 20px;
+} */
+
+
+/*================*/

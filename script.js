@@ -17,15 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let counter = 0;
 
-  let skolko = 0
 
   const createTile = () => {
 
-    skolko++
     
 
     if(counter == 0) {
-
+      
       for(let i = 0; i < pointTileHeightArray.length;) {
         for(let z = 0; z < pointTileWidthArray.length; z++) {
           tile.push({h: pointTileHeightArray[i], w: pointTileWidthArray[z]})
@@ -35,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       counter++
       tile.map((item) => {
-
         let tile = document.createElement("div");
         tile.className = "tile";
 
@@ -48,8 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const checkPoint = () => {
-
-
   
     let startCurrent = -15
     pointTileHeightArray.sort((a, b) => a - b);
@@ -58,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for(let i=0;i<pointTileHeightArray.length;i++) {
       if(startCurrent + 15 < pointTileHeightArray[i]) {
         startCurrent = pointTileHeightArray[i]
-        console.log(pointTileHeightArray);
+        // console.log(pointTileHeightArray);
       } else {
         pointTileHeightArray = [];
         pointTileWidthArray = [];
@@ -86,9 +81,55 @@ document.addEventListener("DOMContentLoaded", () => {
         i++;
       }  
     }
+
   };
 
+  setTimeout(() => {
+    
+  }, 5000)
+
   randomPointsTile();
+
+
+  //Controle ==============
+
+  let nowPosition = 1
+
+  const moveRight = () => {
+    doodle.style.left = nowPosition + 5 + 'px'
+    nowPosition+=5 
+  }
+
+  const moveLeft = () => {
+    doodle.style.left = nowPosition - 5 + 'px'
+    nowPosition-=5 
+  }
+
+  document.addEventListener('keydown', (e) => {
+    // console.log(e);
+    if(e.code === 'ArrowRight') {
+      moveRight()
+    } else if(e.code === 'ArrowLeft') {
+      moveLeft()
+    }
+  })
+
+  //Controle ==============
+
+
+
+  // const goTile = (doodleY) => {
+  //   for(let i = 0; i< tile.length; i++) {
+  //     tile[i].h = tile[i].h + 2
+  //   }
+
+  //   console.log(tile);
+  // }
+
+
+
+  //Jump ===============
+
 
   let top = 1.5;
 
@@ -100,118 +141,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let topPointer = downPoint - 250;
 
-  const goTop = () => {
+  const goTop = (pointY) => {
     downInterwal = setInterval(() => {
-      if (doodle.getBoundingClientRect().y < downPoint - 50) {
-        top = top + 0.5;
-        if (doodle.getBoundingClientRect().y < downPoint - 200) {
-          top = top + 0.4;
-          if (doodle.getBoundingClientRect().y < downPoint - 250) {
+
+      if (doodle.getBoundingClientRect().y < downPoint - 225) {
+        top = top + 0.4;
+        if (doodle.getBoundingClientRect().y < pointY - 200) {
+          top = top + 0.5;
+          if (doodle.getBoundingClientRect().y <= pointY - 250) {
             goBottom();
             clearInterval(downInterwal);
           }
         }
+      }
+      if(doodle.getBoundingClientRect().y < 300) {
+        let doodleY = doodle.getBoundingClientRect().y
+        // goTile(doodleY)
       }
       doodle.style.top = top + "px";
       top = top - 1.5;
     }, 1);
   };
 
+
+
+  let testCouter = 0
+
+  let coordTileCopy = tile.concat()
+
+  
+
   const goBottom = () => {
+
+    
+    
     topInterval = setInterval(() => {
-      if (doodle.getBoundingClientRect().y < topPointer + 50) {
-        top = top - 0.6;
-      }
-      if (doodle.getBoundingClientRect().bottom > downPoint) {
-        top = top - 30;
-        clearInterval(topInterval);
-        goTop();
-      }
+
+      let pointY = doodle.getBoundingClientRect().bottom
+      let pointX = doodle.getBoundingClientRect().x
+
+      if (pointY > tile[testCouter].h) {
+
+      
+        let pointTileX = 300 - tile[testCouter].w
+        let pointDoodleX = 300 - pointX
+
+        let pointMax = Math.max(pointTileX, pointDoodleX)
+        let pointMin = Math.min(pointTileX, pointDoodleX)
+
+        let difference = pointMax - pointMin
+
+        if(difference < 42) {
+          testCouter--
+          top = top - 30;
+          clearInterval(topInterval);
+          goTop(pointY);
+        }
+        testCouter++
+      } else if(pointY < tile[testCouter].h) {
+        if(testCouter != 0) {
+          testCouter--
+        }
+      } 
+
+      // if (doodle.getBoundingClientRect().y < topPointer + 50) {
+      //   top = top - 0.6;
+      // }
+      // if (doodle.getBoundingClientRect().bottom > downPoint) {
+      //   top = top - 30;
+      //   clearInterval(topInterval);
+      //   goTop();
+      // }
       doodle.style.top = top + "px";
-      top = top + 1.5;
+      top = top + 1.2;
     }, 1);
   };
 
   goBottom();
+
+  //Jump ===============
 });
 
 
 
-// let num = 5
 
-// function resilt(num, plus, minus) {
-//     plus(num + 5)
-//     minus(num + 10)
-// }
-
-// resilt(num, function(e) {console.log(e);}, (e) => {console.log(e);})
-
-// let btn = document.querySelector('.btn');
-
-// btn.addEventListener('click' ,(e) => {
-//     secondClick('gfd')
-// })
-
-// function oneClick() {
-//     return () => {
-//         secondClick()
-//     }
-// }
-
-// oneClick()
-
-// function secondClick(e) {
-//     console.log(e)
-// }
-
-// console.log(secondClick)
-
-//Рекурсия
-
-// function fuc(num) {
-//   if(num == 1) return num
-//   return num * fuc(num - 1)
-// }
-
-// let result = fuc(5)
-
-// console.log(result)
-
-//Замыкание
-
-// function some() {
-//     let value = 5
-
-//     function plus() {
-//         return  {
-//             name: 'John',
-//             age: 20 + value
-//         }
-//     }
-
-//     return plus()
-// }
-
-// let value = some()
-
-// let {name, age} = value
-
-// console.log(age)
-
-//!!
-
-// let str = '';
-
-// console.log(!!str)
-
-// ~
-
-// let arr = [1,2,3,4,5];
-
-// let resSerch = arr.indexOf(1);
-
-// if (~resSerch) {
-//     console.log('Нашлось значение')
-// } else {
-//     console.log('Значение не найдено')
-// }
